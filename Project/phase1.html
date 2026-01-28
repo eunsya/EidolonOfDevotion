@@ -36,7 +36,7 @@
 
     /* ===== BACKGROUND ===== */
     body {
-      background: url("assets/images/bg-phase1.jpg") no-repeat center center;
+      background: url("Project/assets/images/bg-phase1.jpg") no-repeat center center;
       background-size: cover;
     }
 
@@ -126,7 +126,7 @@
 
   <div class="audio-trigger" id="audioTrigger"></div>
 
-  <audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
+  <audio id="bgm" src="Project/assets/sounds/bgm.mp3" loop></audio>
 
   <script>
     const progressEl = document.getElementById("progress");
@@ -169,7 +169,7 @@
         if (percent === 100) {
           clearInterval(interval);
           setTimeout(() => {
-            window.location.href = "phase2.html";
+            window.location.href = "Project/Phase2.html";
           }, 1200);
         }
       }, 90);
@@ -191,4 +191,5 @@
   </script>
 </body>
 </html>
+
 
