@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Eidolon of Devotion</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* FORCE LANDSCAPE */
+    @media screen and (orientation: portrait) {
+      body {
+        transform: rotate(90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
+    }
+
+    body {
+      background: url("assets/images/bg-phase1.jpg") no-repeat center center;
+      background-size: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(0,0,0,0.35), rgba(0,0,0,0.85));
+    }
+
+    /* LOGIN BOX */
+    .login-box {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 420px;
+      padding: 28px;
+      background: rgba(0, 0, 0, 0.75);
+      border: 1px solid rgba(255, 210, 140, 0.45);
+      box-shadow:
+        0 0 18px rgba(255, 190, 120, 0.25),
+        inset 0 0 12px rgba(255, 200, 140, 0.08);
+    }
+
+    .login-title {
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: rgba(255, 220, 170, 0.95);
+      margin-bottom: 6px;
+    }
+
+    .login-subtitle {
+      font-size: 12px;
+      color: rgba(220, 210, 190, 0.65);
+      margin-bottom: 18px;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 10px 12px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 200, 140, 0.4);
+      color: rgba(255, 235, 200, 0.95);
+      font-size: 14px;
+      letter-spacing: 1px;
+      outline: none;
+    }
+
+    .login-input::placeholder {
+      color: rgba(255, 235, 200, 0.35);
+    }
+
+    .login-note {
+      margin-top: 8px;
+      font-size: 11px;
+      color: rgba(255, 215, 160, 0.55);
+      font-style: italic;
+    }
+
+    .login-btn {
+      margin-top: 22px;
+      width: 100%;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 210, 140, 0.7);
+      color: rgba(255, 230, 180, 0.95);
+      font-size: 14px;
+      letter-spacing: 1.4px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .login-btn:hover {
+      background: rgba(255, 210, 140, 0.15);
+    }
+
+    .error-text {
+      margin-top: 12px;
+      font-size: 11px;
+      color: rgba(255, 120, 120, 0.75);
+      display: none;
+      letter-spacing: 0.6px;
+    }
+
+    /* AUDIO TRIGGER — DOES NOT BLOCK UI */
+    .audio-trigger {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="login-box">
+    <div class="login-title">SYSTEM AUTHORIZATION</div>
+    <div class="login-subtitle">Verification key required.</div>
+
+    <input
+      type="password"
+      id="passwordInput"
+      class="login-input"
+      placeholder="Enter your password"
+      autocomplete="off"
+    />
+
+    <div class="login-note">
+      Hint: your Instagram username.
+    </div>
+
+    <button class="login-btn" id="loginBtn">
+      CONFIRM ACCESS
+    </button>
+
+    <div class="error-text" id="errorText">
+      Access denied. Invalid key.
+    </div>
+  </div>
+
+  <div class="audio-trigger" id="audioTrigger"></div>
+
+  <audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
+
+  <script>
+    const audio = document.getElementById("bgm");
+    const input = document.getElementById("passwordInput");
+    const button = document.getElementById("loginBtn");
+    const errorText = document.getElementById("errorText");
+
+    const CORRECT_PASSWORD = "chydmsxei";
+
+    function tryLogin() {
+      if (input.value.trim() === CORRECT_PASSWORD) {
+        window.location.href = "phase3.html";
+      } else {
+        errorText.style.display = "block";
+      }
+    }
+
+    button.addEventListener("click", tryLogin);
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        tryLogin();
+      }
+    });
+
+    window.addEventListener("load", () => {
+      audio.play().catch(() => {});
+      input.focus();
+    });
+
+    document.addEventListener("click", () => {
+      audio.play().catch(() => {});
+    }, { once: true });
+  </script>
+</body>
+</html>

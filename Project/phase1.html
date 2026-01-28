@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Eidolon of Devotion</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
+
+  <style>
+    /* ===== RESET ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* ===== FORCE LANDSCAPE ===== */
+    @media screen and (orientation: portrait) {
+      body {
+        transform: rotate(90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
+    }
+
+    /* ===== BACKGROUND ===== */
+    body {
+      background: url("assets/images/bg-phase1.jpg") no-repeat center center;
+      background-size: cover;
+    }
+
+    /* ===== OVERLAY ===== */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(0,0,0,0.25), rgba(0,0,0,0.85));
+    }
+
+    /* ===== LOADING CONTAINER ===== */
+    .loading-wrapper {
+      position: absolute;
+      bottom: 8%;
+      left: 6%;
+      width: 88%;
+    }
+
+    /* ===== LOADING BAR ===== */
+    .loading-bar {
+      position: relative;
+      height: 4px;
+      background: rgba(255, 215, 160, 0.15);
+      overflow: hidden;
+    }
+
+    .loading-progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 200, 120, 0.9),
+        rgba(255, 220, 160, 1)
+      );
+      box-shadow:
+        0 0 6px rgba(255, 210, 140, 0.8),
+        0 0 14px rgba(255, 190, 120, 0.6);
+      position: relative;
+    }
+
+    /* ===== ARROW TIP ===== */
+    .loading-progress::after {
+      content: "";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-left: 10px solid rgba(255, 220, 160, 1);
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      filter: drop-shadow(0 0 6px rgba(255, 210, 140, 0.9));
+    }
+
+    /* ===== TEXT ===== */
+    .loading-text {
+      margin-top: 10px;
+      font-size: 13px;
+      letter-spacing: 0.6px;
+      color: rgba(255, 235, 200, 0.85);
+      display: flex;
+      justify-content: space-between;
+      text-shadow: 0 0 6px rgba(255, 210, 150, 0.25);
+    }
+
+    /* ===== CLICK TO START AUDIO (INVISIBLE) ===== */
+    .audio-trigger {
+      position: absolute;
+      inset: 0;
+      cursor: default;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="loading-wrapper">
+    <div class="loading-bar">
+      <div class="loading-progress" id="progress"></div>
+    </div>
+
+    <div class="loading-text">
+      <span id="statusText">Initializing system...</span>
+      <span id="percentText">0%</span>
+    </div>
+  </div>
+
+  <div class="audio-trigger" id="audioTrigger"></div>
+
+  <audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
+
+  <script>
+    const progressEl = document.getElementById("progress");
+    const percentEl = document.getElementById("percentText");
+    const statusEl = document.getElementById("statusText");
+    const audio = document.getElementById("bgm");
+    const trigger = document.getElementById("audioTrigger");
+
+    let percent = 0;
+
+    const statusMap = [
+      { p: 0,  t: "Booting core modules..." },
+      { p: 10, t: "Reading encrypted data blocks..." },
+      { p: 25, t: "Synchronizing memory fragments..." },
+      { p: 40, t: "Reconstructing user profile..." },
+      { p: 55, t: "Verifying integrity checksum..." },
+      { p: 70, t: "Decrypting emotional payload..." },
+      { p: 85, t: "Finalizing system alignment..." },
+      { p: 95, t: "Almost there..." }
+    ];
+
+    function updateStatus(p) {
+      for (let i = statusMap.length - 1; i >= 0; i--) {
+        if (p >= statusMap[i].p) {
+          statusEl.textContent = statusMap[i].t;
+          break;
+        }
+      }
+    }
+
+    function startLoading() {
+      const interval = setInterval(() => {
+        percent += Math.random() * 3;
+        if (percent >= 100) percent = 100;
+
+        progressEl.style.width = percent + "%";
+        percentEl.textContent = Math.floor(percent) + "%";
+        updateStatus(percent);
+
+        if (percent === 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            window.location.href = "phase2.html";
+          }, 1200);
+        }
+      }, 90);
+    }
+
+    /* ===== AUDIO HANDLING ===== */
+    function playAudio() {
+      audio.play().catch(() => {});
+      trigger.removeEventListener("click", playAudio);
+    }
+
+    trigger.addEventListener("click", playAudio);
+
+    /* Attempt autoplay */
+    window.addEventListener("load", () => {
+      audio.play().catch(() => {});
+      startLoading();
+    });
+  </script>
+</body>
+</html>
+

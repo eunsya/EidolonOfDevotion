@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eidolon of Devotion</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:monospace;}
+
+body{
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:url("assets/images/bg-phase7.jpg") center/cover no-repeat;
+  cursor:pointer;
+}
+
+/* DARK OVERLAY */
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.6);
+}
+
+/* TEXT CENTER */
+.systemText{
+  position:absolute;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  color:#e6c86e;
+  text-align:center;
+  letter-spacing:2px;
+  opacity:0;
+  transition:1.2s;
+  z-index:2;
+}
+
+.title{
+  font-size:18px;
+  margin-bottom:12px;
+}
+.line{
+  font-size:13px;
+  opacity:.9;
+}
+
+/* MEMO IMAGE */
+.memo{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(1.15);
+  width:70vw;
+  max-width:520px;
+  opacity:0;
+  filter:drop-shadow(0 0 40px rgba(255,215,120,.6));
+  transition:2.2s ease;
+  z-index:3;
+}
+
+/* FINAL HINT */
+.hint{
+  position:absolute;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  color:#e6c86e;
+  font-size:12px;
+  letter-spacing:2px;
+  opacity:0;
+  transition:2s;
+  z-index:4;
+}
+</style>
+</head>
+
+<body>
+
+<div class="overlay"></div>
+
+<div class="systemText" id="sys">
+  <div class="title">LEVEL 20 CONFIRMED</div>
+  <div class="line">Synchronization successful</div>
+</div>
+
+<img src="assets/images/memo.png" class="memo" id="memo">
+<div class="hint" id="hint">Tap anywhere to continue</div>
+
+<script>
+const sys = document.getElementById("sys");
+const memo = document.getElementById("memo");
+const hint = document.getElementById("hint");
+
+/* TEXT APPEAR */
+setTimeout(()=> sys.style.opacity = 1, 800);
+
+/* MEMO FADE + ZOOM */
+setTimeout(()=>{
+  memo.style.opacity = 1;
+  memo.style.transform = "translate(-50%,-50%) scale(1)";
+},2400);
+
+/* HINT */
+setTimeout(()=> hint.style.opacity = 1, 4200);
+
+/* CLICK ANYWHERE */
+document.body.onclick = ()=>{
+  window.location.href = "https://wa.me/qr/YIAKLTJINNGZN1";
+};
+</script>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Eidolon of Devotion</title>
+
+<style>
+html,body{
+margin:0;height:100%;
+font-family:Segoe UI, sans-serif;
+background:url('assets/images/bg-phase4.jpg') center/cover no-repeat fixed;
+color:silver;overflow:hidden;
+}
+
+/* BOX */
+.ui{
+width:460px;
+background:rgba(0,0,0,0.78);
+border:1px solid gold;
+box-shadow:0 0 20px gold;
+padding:18px;
+position:absolute;
+top:50%;left:50%;
+transform:translate(-50%,-50%);
+}
+
+/* TOP */
+.top{text-align:center}
+.logo{width: 200px;}
+.init{color:gold;height:24px;margin-top:6px}
+
+/* INFO */
+.info{margin-top:14px;line-height:1.6em;min-height:60px;white-space:pre-line}
+.legendary{color:#b266ff}
+.gold{color:gold}
+
+/* STATS */
+.stats{display:flex;justify-content:space-between;margin-top:12px}
+.col{width:48%}
+.stat{margin-bottom:7px}
+.head{display:flex;justify-content:space-between;font-size:12px}
+.barbg{height:8px;background:#222;border:1px solid gold}
+.fill{height:100%;width:0;background:gold;box-shadow:0 0 6px gold;transition:width .2s linear}
+.glow{box-shadow:0 0 15px gold,0 0 25px gold}
+
+/* CONTINUE */
+.continue{
+text-align:center;
+margin-top:12px;
+color:gold;
+opacity:0;
+cursor:pointer;
+text-shadow:0 0 10px gold;
+}
+</style>
+</head>
+
+<body>
+
+<audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
+<audio id="typeSound" src="assets/sounds/type.mp3"></audio>
+
+<div class="ui">
+<div class="top">
+<img src="assets/images/logo.png" class="logo">
+
+<div class="init" id="init"></div>
+</div>
+
+<div class="info" id="info"></div>
+
+<div class="stats">
+<div class="col" id="left"></div>
+<div class="col" id="right"></div>
+</div>
+
+<div class="continue" id="continueText">Proceed to Observation</div>
+</div>
+
+<script>
+const initEl=document.getElementById("init");
+const infoEl=document.getElementById("info");
+const typeSound=document.getElementById("typeSound");
+const bgm=document.getElementById("bgm");
+
+document.body.addEventListener("click",()=>{
+bgm.play();
+typeSound.play().then(()=>typeSound.pause());
+},{once:true});
+
+function playType(){
+typeSound.currentTime=0;
+typeSound.volume=0.4;
+typeSound.play().catch(()=>{});
+}
+
+function typeText(el,text,speed,cb){
+let i=0;
+function t(){
+if(i<text.length){
+el.innerHTML+=text[i];
+playType();
+i++;
+setTimeout(t,speed);
+}else if(cb)cb();
+}
+t();
+}
+
+/* INIT DOTS */
+let dots=1;
+setInterval(()=>{
+initEl.innerHTML="Initializing Player Profile"+'.'.repeat(dots);
+dots=dots%3+1;
+},500);
+
+setTimeout(showInfo,2000);
+
+/* INFO */
+function showInfo(){
+typeText(infoEl,"Name : Dimas Cahyawiguna\n",30,()=>{
+typeText(infoEl,"Class : Sovereign of Radne ",30,()=>{
+infoEl.innerHTML+="(<span class='legendary'>Legendary</span>)\n";
+typeText(infoEl,"Title : Myonlyever | My Favorite Human | My 911",30,startStats);
+});
+});
+}
+
+/* STATS */
+const stats=[
+{name:"Kindness",v:92},
+{name:"Humor",v:88},
+{name:"Strength",v:95},
+{name:"Charm",v:97},
+{name:"Handsome",v:"MAX"},
+{name:"Loyalty",v:90},
+{name:"Loved",v:"∞"},
+{name:"Future Potential",v:93}
+];
+
+function makeStat(stat,col,done){
+const s=document.createElement("div");s.className="stat";
+const head=document.createElement("div");head.className="head";
+const n=document.createElement("span");n.textContent=stat.name;
+const val=document.createElement("span");val.textContent="0";
+head.appendChild(n);head.appendChild(val);
+const bg=document.createElement("div");bg.className="barbg";
+const fill=document.createElement("div");fill.className="fill";
+bg.appendChild(fill);s.appendChild(head);s.appendChild(bg);col.appendChild(s);
+
+let target=(stat.v==="MAX"||stat.v==="∞")?100:stat.v;
+let c=0;
+let int=setInterval(()=>{
+c++;fill.style.width=c+"%";
+if(c>85)fill.style.background="#ffd700";
+if(c>92)fill.classList.add("glow");
+
+if(stat.v==="MAX") val.innerHTML=c<100?c:"<span class='gold'>MAX</span>";
+else if(stat.v==="∞") val.innerHTML=c<100?c:"<span class='gold'>∞</span>";
+else val.textContent=c;
+
+if(c>=target){clearInterval(int);done();}
+},20);
+}
+
+function startStats(){
+const left=document.getElementById("left");
+const right=document.getElementById("right");
+let i=0;
+function next(){
+if(i<4) makeStat(stats[i],left,next);
+else if(i<8) makeStat(stats[i],right,next);
+else document.getElementById("continueText").style.opacity=1;
+i++;
+}
+next();
+}
+
+/* NEXT PHASE */
+document.getElementById("continueText").onclick=()=>{
+document.body.style.opacity=0;
+setTimeout(()=>location.href="phase5.html",1000);
+};
+</script>
+
+</body>
+</html>

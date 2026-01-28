@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eidolon of Devotion</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:monospace;}
+body{
+  background:#000;
+  color:#ffd86b;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+}
+
+canvas{
+  position:fixed;
+  inset:0;
+}
+
+.ui{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.title{
+  font-size:26px;
+  letter-spacing:4px;
+}
+
+.sub{
+  margin-top:6px;
+  font-size:13px;
+  opacity:.85;
+}
+
+.progress{
+  margin-top:28px;
+  font-size:13px;
+  min-height:18px;
+  opacity:.9;
+}
+
+/* FULL ERROR OVERLAY */
+.errorOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.95);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:10;
+}
+
+.errorBox{
+  border:1px solid #ff5555;
+  padding:28px 40px;
+  color:#ff5555;
+  text-align:center;
+  box-shadow:0 0 30px rgba(255,80,80,.7);
+}
+
+.button{
+  margin-top:18px;
+  cursor:pointer;
+  color:#ffd86b;
+  text-shadow:0 0 12px rgba(255,215,120,.9);
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="canvas"></canvas>
+
+<div class="ui">
+  <div class="title">OBSERVATION</div>
+  <div class="sub" id="dots">identification.</div>
+  <div class="progress" id="progress"></div>
+</div>
+
+<div class="errorOverlay" id="error">
+  <div class="errorBox">
+    SYSTEM FAILURE<br><br>
+    Indication overload detected.<br>
+    Automatic calibration required.
+    <div class="button" id="save">CLICK TO SAVE DATA</div>
+  </div>
+</div>
+
+<script>
+// PARTICLE DOTS — MUNCUL PELAN & NYEBAR
+const c=document.getElementById("canvas");
+const ctx=c.getContext("2d");
+c.width=innerWidth;c.height=innerHeight;
+
+let dots=[],spawn=0;
+
+function addDot(){
+  dots.push({
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    vx:(Math.random()-.5)*0.2,
+    vy:(Math.random()-.5)*0.2,
+    r:Math.random()*2+1
+  });
+}
+
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+  dots.forEach(d=>{
+    d.x+=d.vx; d.y+=d.vy;
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(255,215,120,.7)";
+    ctx.fill();
+  });
+  if(spawn<80){ addDot(); spawn++; }
+  requestAnimationFrame(draw);
+}
+draw();
+
+// IDENTIFICATION DOTS LOOP
+let dot=1;
+setInterval(()=>{
+  dot=dot%3+1;
+  document.getElementById("dots").textContent=
+    "identification" + ".".repeat(dot);
+},650);
+
+// PROGRESS SYSTEM TEXT (REAL GAME FEEL)
+const progressLines=[
+  "Scanning entity presence...",
+  "Reading core resonance...",
+  "Stabilizing emotional layer...",
+  "Mapping devotion signature...",
+  "Cross-checking alignment...",
+  "Synchronization rising...",
+  "Signal intensity exceeding limit...",
+  "Warning threshold approaching...",
+  "Unstable indication detected..."
+];
+
+let i=0;
+let speed=1400;
+const progressEl=document.getElementById("progress");
+
+function progressRun(){
+  if(i<progressLines.length){
+    progressEl.textContent=progressLines[i];
+    i++;
+    speed=Math.max(160,speed-150);
+    setTimeout(progressRun,speed);
+  }else{
+    setTimeout(()=>{
+      document.getElementById("error").style.display="flex";
+    },400);
+  }
+}
+setTimeout(progressRun,3000);
+
+// SAVE → PHASE 6
+document.getElementById("save").onclick=()=>{
+  document.body.style.opacity=0;
+  document.body.style.transition="1.8s";
+  setTimeout(()=>{
+    window.location.href="phase6.html";
+  },1800);
+};
+</script>
+
+</body>
+</html>

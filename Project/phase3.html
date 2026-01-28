@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Eidolon of Devotion</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: black;
+    }
+
+    /* FORCE LANDSCAPE */
+    @media screen and (orientation: portrait) {
+      body {
+        transform: rotate(90deg);
+        transform-origin: left top;
+        width: 100vh;
+        height: 100vw;
+        position: absolute;
+        top: 100%;
+        left: 0;
+      }
+    }
+
+    body {
+      background: url("assets/images/bg-phase3.jpg") no-repeat center center;
+      background-size: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at center,
+        rgba(0,0,0,0.25),
+        rgba(0,0,0,0.85)
+      );
+    }
+
+    /* CENTER CONTENT */
+    .center-wrapper {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    /* LOGO */
+    .logo {
+      width: 500px;
+      max-width: 100%;
+      margin-bottom: 18px;
+      filter:
+        drop-shadow(0 0 18px rgba(255, 200, 140, 0.35));
+    }
+
+    /* DATE TEXT */
+    .era-text {
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: rgba(255, 225, 185, 0.75);
+      margin-bottom: 34px;
+      text-shadow: 0 0 8px rgba(255, 200, 140, 0.25);
+    }
+
+    /* BUTTON */
+    .start-btn {
+      padding: 14px 42px;
+      background: linear-gradient(
+        180deg,
+        rgba(190, 150, 90, 0.95),
+        rgba(120, 85, 40, 0.95)
+      );
+      border: 2px solid rgba(40, 40, 40, 0.9);
+      color: rgba(20, 15, 10, 0.95);
+      font-size: 15px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      box-shadow:
+        inset 0 0 6px rgba(255, 235, 200, 0.35),
+        0 0 18px rgba(255, 190, 120, 0.45);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .start-btn:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .start-btn:active {
+      transform: translateY(1px);
+      filter: brightness(0.95);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="center-wrapper">
+    <img src="assets/images/logo.png" alt="Game Logo" class="logo" />
+
+    <div class="era-text">
+      2006.01.29 — 2026.01.29
+    </div>
+
+    <button class="start-btn" id="startBtn">
+      GAME START
+    </button>
+  </div>
+
+  <audio id="bgm" src="assets/sounds/bgm.mp3" loop></audio>
+
+  <script>
+    const audio = document.getElementById("bgm");
+    const startBtn = document.getElementById("startBtn");
+
+    window.addEventListener("load", () => {
+      audio.play().catch(() => {});
+    });
+
+    document.addEventListener("click", () => {
+      audio.play().catch(() => {});
+    }, { once: true });
+
+    startBtn.addEventListener("click", () => {
+      window.location.href = "phase4.html";
+    });
+  </script>
+</body>
+</html>
